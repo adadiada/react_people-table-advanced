@@ -1,7 +1,6 @@
 import { useSearchParams } from 'react-router-dom';
 import { SearchLink } from './SearchLink';
 import React from 'react';
-// import { getFilteredPeople } from '../utils/filterPeolpe';
 
 export const PeopleFilters = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -18,17 +17,25 @@ export const PeopleFilters = () => {
   }
 
   const handleCenturiesChange = (ch: string) => {
+    const params = new URLSearchParams(searchParams);
     const newList = centuries.includes(ch)
       ? centuries.filter(c => c !== ch)
       : [...centuries, ch];
 
-    const params =
-      newList.length > 0 ? { centuries: newList } : { centuries: null };
+    params.delete('centuries');
 
-    return params;
+    newList.forEach(c => params.append('centuries', c));
+    setSearchParams(params);
   };
 
-  function resetAll() {
+  function clearAll() {
+    const params = new URLSearchParams(searchParams);
+
+    params.delete('centuries');
+    setSearchParams(params);
+  }
+
+  function resetAllFilters() {
     const params = new URLSearchParams();
 
     params.delete('century');
@@ -133,8 +140,10 @@ export const PeopleFilters = () => {
 
           <div className="level-right ml-4">
             <a
+              onClick={clearAll}
               data-cy="centuryALL"
               className="button is-success is-outlined"
+              // style={{ color: }}
               href="#/people"
             >
               All
@@ -143,7 +152,7 @@ export const PeopleFilters = () => {
         </div>
       </div>
 
-      <div className="panel-block" onClick={resetAll}>
+      <div className="panel-block" onClick={resetAllFilters}>
         <a className="button is-link is-outlined is-fullwidth" href="#/people">
           Reset all filters
         </a>

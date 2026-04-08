@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Person } from '../types/Person';
 import { PeopleLink } from './PeopleLink';
-// import { PeopleSort } from './PeopleSort';
+// import { useSearchParams } from 'react-router-dom';
+import { SearchLink } from './SearchLink';
 
 type Props = {
   people?: Person[] | null;
@@ -12,6 +13,7 @@ type Props = {
 export const PeopleTable: React.FC<Props> = ({ people }) => {
   const [selectedSlug, setSelectedSlug] = useState<string>('');
   const { slug: id } = useParams();
+  // const [searchParams] = useSearchParams();
 
   useEffect(() => {
     if (id) {
@@ -43,44 +45,44 @@ export const PeopleTable: React.FC<Props> = ({ people }) => {
           <th>
             <span className="is-flex is-flex-wrap-nowrap">
               Name
-              <Link to={{ pathname: '/people' }}>
+              <SearchLink to={{ pathname: '/people' }}>
                 <span className="icon">
                   <i className="fas fa-sort" />
                 </span>
-              </Link>
+              </SearchLink>
             </span>
           </th>
 
           <th>
             <span className="is-flex is-flex-wrap-nowrap">
               Sex
-              <a href="#/people?sort=sex">
+              <SearchLink href="#/people?sort=sex">
                 <span className="icon">
                   <i className="fas fa-sort" />
                 </span>
-              </a>
+              </SearchLink>
             </span>
           </th>
 
           <th>
             <span className="is-flex is-flex-wrap-nowrap">
               Born
-              <a href="#/people?sort=born&amp;order=desc">
+              <SearchLink href="#/people?sort=born&amp;order=desc">
                 <span className="icon">
                   <i className="fas fa-sort-up" />
                 </span>
-              </a>
+              </SearchLink>
             </span>
           </th>
 
           <th>
             <span className="is-flex is-flex-wrap-nowrap">
               Died
-              <a href="#/people?sort=died">
+              <SearchLink href="#/people?sort=died">
                 <span className="icon">
                   <i className="fas fa-sort" />
                 </span>
-              </a>
+              </SearchLink>
             </span>
           </th>
 

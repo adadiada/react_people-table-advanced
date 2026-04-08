@@ -5,7 +5,7 @@ export const getFilteredPeople = (
   sex: string | null,
   query: string | null,
   centuries: string[],
-): Person[] => {
+) => {
   let filtered = [...people];
 
   if (sex) {
