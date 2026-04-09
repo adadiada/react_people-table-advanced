@@ -1,6 +1,7 @@
 import { useSearchParams } from 'react-router-dom';
 import { SearchLink } from './SearchLink';
 import React from 'react';
+import { SearchParams } from '../utils/searchHelper';
 
 export const PeopleFilters = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -16,17 +17,14 @@ export const PeopleFilters = () => {
     setSearchParams(params);
   }
 
-  const handleCenturiesChange = (ch: string) => {
-    const params = new URLSearchParams(searchParams);
+  const getCenturiesChange = (ch: string): SearchParams => {
     const newList = centuries.includes(ch)
       ? centuries.filter(c => c !== ch)
       : [...centuries, ch];
 
-    params.delete('centuries');
-
-    newList.forEach(c => params.append('centuries', c));
-
-    return params;
+    return {
+      centuries: newList.length > 0 ? newList : null,
+    };
   };
 
   function clearAll() {
@@ -90,7 +88,7 @@ export const PeopleFilters = () => {
             {['16', '17', '18', '19', '20'].map(century => (
               <SearchLink
                 key={century}
-                params={handleCenturiesChange(century)}
+                params={getCenturiesChange(century)}
                 data-cy="century"
                 className={
                   isActiveCentury(century)
@@ -108,7 +106,6 @@ export const PeopleFilters = () => {
               onClick={clearAll}
               data-cy="centuryALL"
               className="button is-success is-outlined"
-              // style={{ color: }}
               href="#/people"
             >
               All

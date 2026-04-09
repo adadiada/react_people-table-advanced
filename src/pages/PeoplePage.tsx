@@ -20,9 +20,11 @@ export const PeoplePage = () => {
 
   const sex = searchParams.get('sex');
   const query = searchParams.get('query');
-  const centuries = searchParams.getAll('centuries');
+
   const sort = searchParams.get('sort');
   const order = searchParams.get('order');
+
+  const centuriesKey = searchParams.getAll('centuries').join(',');
 
   useEffect(() => {
     setLoading(true);
@@ -40,11 +42,13 @@ export const PeoplePage = () => {
   }, []);
 
   useEffect(() => {
+    const centuries = centuriesKey.length > 0 ? centuriesKey.split(',') : [];
+
     const filteredPeople = getFilteredPeople(allPeople, sex, query, centuries);
     const sortedPeople = getSortedPeople(filteredPeople, sort, order);
 
     setPeopleData(sortedPeople);
-  }, [allPeople, sex, query, centuries, sort, order]);
+  }, [allPeople, sex, query, centuriesKey, sort, order]);
 
   return (
     <>
