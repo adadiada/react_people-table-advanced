@@ -25,20 +25,14 @@ export const PeopleFilters = () => {
     params.delete('centuries');
 
     newList.forEach(c => params.append('centuries', c));
-    setSearchParams(params);
+
+    return params;
   };
 
   function clearAll() {
     const params = new URLSearchParams(searchParams);
 
     params.delete('centuries');
-    setSearchParams(params);
-  }
-
-  function resetAllFilters() {
-    const params = new URLSearchParams();
-
-    params.delete('century');
     setSearchParams(params);
   }
 
@@ -93,49 +87,20 @@ export const PeopleFilters = () => {
       <div className="panel-block">
         <div className="level is-flex-grow-1 is-mobile" data-cy="CenturyFilter">
           <div className="level-left">
-            <SearchLink
-              params={handleCenturiesChange('16')}
-              data-cy="century"
-              className={
-                isActiveCentury('16') ? 'button mr-1 is-active' : 'button mr-1'
-              }
-            >
-              16
-            </SearchLink>
-
-            <SearchLink
-              params={handleCenturiesChange('17')}
-              data-cy="century"
-              className={
-                isActiveCentury('17') ? 'button mr-1 is-active' : 'button mr-1'
-              }
-            >
-              17
-            </SearchLink>
-
-            <SearchLink
-              params={handleCenturiesChange('18')}
-              data-cy="century"
-              className="button mr-1 is-info"
-            >
-              18
-            </SearchLink>
-
-            <SearchLink
-              params={handleCenturiesChange('19')}
-              data-cy="century"
-              className="button mr-1 is-info"
-            >
-              19
-            </SearchLink>
-
-            <SearchLink
-              params={handleCenturiesChange('20')}
-              data-cy="century"
-              className="button mr-1"
-            >
-              20
-            </SearchLink>
+            {['16', '17', '18', '19', '20'].map(century => (
+              <SearchLink
+                key={century}
+                params={handleCenturiesChange(century)}
+                data-cy="century"
+                className={
+                  isActiveCentury(century)
+                    ? 'button mr-1 is-active'
+                    : 'button mr-1'
+                }
+              >
+                {century}
+              </SearchLink>
+            ))}
           </div>
 
           <div className="level-right ml-4">
@@ -152,7 +117,7 @@ export const PeopleFilters = () => {
         </div>
       </div>
 
-      <div className="panel-block" onClick={resetAllFilters}>
+      <div className="panel-block" onClick={clearAll}>
         <a className="button is-link is-outlined is-fullwidth" href="#/people">
           Reset all filters
         </a>

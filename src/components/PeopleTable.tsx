@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Person } from '../types/Person';
 import { PeopleLink } from './PeopleLink';
-// import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { SearchLink } from './SearchLink';
 
 type Props = {
@@ -13,7 +13,7 @@ type Props = {
 export const PeopleTable: React.FC<Props> = ({ people }) => {
   const [selectedSlug, setSelectedSlug] = useState<string>('');
   const { slug: id } = useParams();
-  // const [searchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
     if (id) {
