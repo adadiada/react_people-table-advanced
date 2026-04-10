@@ -1,10 +1,9 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { Person } from '../types/Person';
 import { PeopleLink } from './PeopleLink';
-// import { useSearchParams } from 'react-router-dom';
-import { SearchLink } from './SearchLink';
+import { PeopleSort } from './PeopleSort';
 
 type Props = {
   people?: Person[] | null;
@@ -13,7 +12,8 @@ type Props = {
 export const PeopleTable: React.FC<Props> = ({ people }) => {
   const [selectedSlug, setSelectedSlug] = useState<string>('');
   const { slug: id } = useParams();
-  // const [searchParams] = useSearchParams();
+  const { sort, order, handleSort } = PeopleSort();
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
     if (id) {
@@ -43,46 +43,86 @@ export const PeopleTable: React.FC<Props> = ({ people }) => {
       <thead>
         <tr>
           <th>
-            <span className="is-flex is-flex-wrap-nowrap">
+            <span
+              className="is-flex is-flex-wrap-nowrap"
+              style={{ cursor: 'pointer' }}
+              onClick={() => handleSort('name')}
+            >
               Name
-              <SearchLink params={{ sort: null, order: null }}>
-                <span className="icon">
-                  <i className="fas fa-sort" />
-                </span>
-              </SearchLink>
+              <span className="icon">
+                <i
+                  className={
+                    sort === 'name'
+                      ? order === 'desc'
+                        ? 'fas fa-sort-down'
+                        : 'fas fa-sort-up'
+                      : 'fas fa-sort'
+                  }
+                />
+              </span>
             </span>
           </th>
 
           <th>
-            <span className="is-flex is-flex-wrap-nowrap">
+            <span
+              className="is-flex is-flex-wrap-nowrap"
+              style={{ cursor: 'pointer' }}
+              onClick={() => handleSort('sex')}
+            >
               Sex
-              <SearchLink params={{ sort: 'sex' }}>
-                <span className="icon">
-                  <i className="fas fa-sort" />
-                </span>
-              </SearchLink>
+              <span className="icon">
+                <i
+                  className={
+                    sort === 'sex'
+                      ? order === 'desc'
+                        ? 'fas fa-sort-down'
+                        : 'fas fa-sort-up'
+                      : 'fas fa-sort'
+                  }
+                />
+              </span>
             </span>
           </th>
 
           <th>
-            <span className="is-flex is-flex-wrap-nowrap">
+            <span
+              className="is-flex is-flex-wrap-nowrap"
+              style={{ cursor: 'pointer' }}
+              onClick={() => handleSort('born')}
+            >
               Born
-              <SearchLink params={{ sort: 'born', order: 'desc' }}>
-                <span className="icon">
-                  <i className="fas fa-sort-up" />
-                </span>
-              </SearchLink>
+              <span className="icon">
+                <i
+                  className={
+                    sort === 'born'
+                      ? order === 'desc'
+                        ? 'fas fa-sort-down'
+                        : 'fas fa-sort-up'
+                      : 'fas fa-sort'
+                  }
+                />
+              </span>
             </span>
           </th>
 
           <th>
-            <span className="is-flex is-flex-wrap-nowrap">
+            <span
+              className="is-flex is-flex-wrap-nowrap"
+              style={{ cursor: 'pointer' }}
+              onClick={() => handleSort('died')}
+            >
               Died
-              <SearchLink params={{}} {...{ sort: 'died' }}>
-                <span className="icon">
-                  <i className="fas fa-sort" />
-                </span>
-              </SearchLink>
+              <span className="icon">
+                <i
+                  className={
+                    sort === 'died'
+                      ? order === 'desc'
+                        ? 'fas fa-sort-down'
+                        : 'fas fa-sort-up'
+                      : 'fas fa-sort'
+                  }
+                />
+              </span>
             </span>
           </th>
 
@@ -103,7 +143,10 @@ export const PeopleTable: React.FC<Props> = ({ people }) => {
           >
             <td>
               <Link
-                to={`/people/${person.slug}`}
+                to={{
+                  pathname: `/people/${person.slug}`,
+                  search: searchParams.toString(),
+                }}
                 className={person.sex === 'f' ? 'has-text-danger' : ''}
               >
                 {person.name}

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/indent */
 import { useEffect, useState } from 'react';
 import { PeopleFilters } from '../components/PeopleFilters';
 import { Loader } from '../components/Loader';
@@ -76,13 +77,16 @@ export const PeoplePage = () => {
             </p>
           )}
 
-          {!loading && peopleData && peopleData.length === 0 && (
+          {!loading && peopleData && allPeople.length === 0 && (
             <p data-cy="noPeopleMessage">There are no people on the server</p>
           )}
 
-          {!loading && peopleData && peopleData.length === 0 && (
-            <p>There are no people matching the current search criteria</p>
-          )}
+          {!loading &&
+            peopleData &&
+            allPeople.length > 0 &&
+            peopleData.length === 0 && (
+              <p>There are no people matching the current search criteria</p>
+            )}
 
           {!loading && peopleData && peopleData.length > 0 && (
             <PeopleTable people={peopleData} />
